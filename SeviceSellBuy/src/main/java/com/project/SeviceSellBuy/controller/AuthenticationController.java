@@ -19,7 +19,7 @@ import com.project.SeviceSellBuy.dto.AuthenticationRequest;
 import com.project.SeviceSellBuy.dto.SignupRequestDTO;
 import com.project.SeviceSellBuy.dto.UserDto;
 import com.project.SeviceSellBuy.model.User;
-import com.project.SeviceSellBuy.repositroy.UserRepository;
+import com.project.SeviceSellBuy.repository.UserRepository;
 import com.project.SeviceSellBuy.service.authentication.AuthService;
 import com.project.SeviceSellBuy.service.jwt.UserDetailsServiceImpl;
 import com.project.SeviceSellBuy.util.JwtUtil;
@@ -85,7 +85,8 @@ public class AuthenticationController {
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
-		final String jwt = jwtUtil.genrateToken(userDetails.getUsername());
+		
+		final String jwt = jwtUtil.generateToken(userDetails.getUsername());
 		User user = userRepository.findFirstByEmail(authenticationRequest.getUsername());
 
 		response.getWriter().write(new JSONObject()

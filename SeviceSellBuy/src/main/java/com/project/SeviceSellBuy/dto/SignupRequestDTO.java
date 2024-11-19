@@ -1,8 +1,6 @@
 package com.project.SeviceSellBuy.dto;
 
-import com.project.SeviceSellBuy.enums.UserRole;
 
-import lombok.Data;
 
 //@Data
 public class SignupRequestDTO {

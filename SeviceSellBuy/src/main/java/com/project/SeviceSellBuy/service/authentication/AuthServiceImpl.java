@@ -8,7 +8,7 @@ import com.project.SeviceSellBuy.dto.SignupRequestDTO;
 import com.project.SeviceSellBuy.dto.UserDto;
 import com.project.SeviceSellBuy.enums.UserRole;
 import com.project.SeviceSellBuy.model.User;
-import com.project.SeviceSellBuy.repositroy.UserRepository;
+import com.project.SeviceSellBuy.repository.UserRepository;
 
 @Service
 public class AuthServiceImpl implements AuthService {
