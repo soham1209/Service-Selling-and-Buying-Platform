@@ -24,8 +24,6 @@ import com.project.SeviceSellBuy.service.authentication.AuthService;
 import com.project.SeviceSellBuy.service.jwt.UserDetailsServiceImpl;
 import com.project.SeviceSellBuy.util.JwtUtil;
 
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
