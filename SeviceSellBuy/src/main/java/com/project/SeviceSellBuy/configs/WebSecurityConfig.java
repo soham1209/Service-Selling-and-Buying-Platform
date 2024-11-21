@@ -23,16 +23,45 @@ public class WebSecurityConfig {
 
 	@Autowired
 	private JwtRequestFilter requestFilter;
-
+	
+	@Autowired
+	private SimpleCorsFilter simpleCorsFilter;
+	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(requests -> requests
-				.requestMatchers("/authenticate", "/company/sign-up", "/client/sign-up", "/ads", "/search/{service}")
-				.permitAll().anyRequest().authenticated())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class).build();
+	    return http
+	            .csrf(csrf -> csrf.disable())
+	            .cors(cors -> cors.configurationSource(simpleCorsFilter.corsConfigurationSource())) // Add CORS configuration
+	            .authorizeHttpRequests(requests -> requests
+	                    .requestMatchers("/authenticate", "/company/sign-up", "/client/sign-up", "/ads", "/search/{service}")
+	                    .permitAll()
+	                    .anyRequest().authenticated())
+	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	            .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class)
+	            .build();
 	}
-
+	
+	//proper spring securty
+//	@Bean
+//	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//		return http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(requests -> requests
+//				.requestMatchers("/authenticate", "/company/sign-up", "/client/sign-up", "/ads", "/search/{service}")
+//				.permitAll().anyRequest().authenticated())
+//				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//				.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class).build();
+//	}
+	
+	//for bypaisng spring seurty
+//	@Bean
+//	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//	    // Temporarily disable security by allowing all requests
+//	    return http.csrf(csrf -> csrf.disable())
+//	            .authorizeHttpRequests(requests -> requests
+//	                    .anyRequest().permitAll()) // Allow all requests
+//	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//	            .build();
+//	}
+	
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
