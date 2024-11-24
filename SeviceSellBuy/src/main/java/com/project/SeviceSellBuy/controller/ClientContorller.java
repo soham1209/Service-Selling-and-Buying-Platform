@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.SeviceSellBuy.dto.ReservationDTO;
+import com.project.SeviceSellBuy.dto.ReviewDTO;
 import com.project.SeviceSellBuy.service.client.ClientServie;
 
 import jakarta.websocket.server.PathParam;
@@ -39,8 +40,6 @@ public class ClientContorller {
 
 		boolean success = clientServie.bookService(reservationDTO);
 		if (success) {
-			System.out.println("Received Book Date: " + reservationDTO.getBookDate());
-			System.out.println("Received Book Date: " + reservationDTO.getReservationStatus());
 			return ResponseEntity.status(HttpStatus.OK).build();
 
 		} else {
@@ -56,6 +55,16 @@ public class ClientContorller {
 	@GetMapping("/my-bookings/{userId}")
 	public ResponseEntity<?> getAllBookingsByUserId(@PathVariable Long userId) {
 		return ResponseEntity.ok(clientServie.getAllBookingsByUserId(userId));
+	}
+
+	@PostMapping("/review")
+	public ResponseEntity<?> giveReview(@RequestBody ReviewDTO reviewDTO) {
+		Boolean success = clientServie.giveReview(reviewDTO);
+		if (success) {
+			return ResponseEntity.status(HttpStatus.OK).build();
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 }

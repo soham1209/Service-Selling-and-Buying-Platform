@@ -1,5 +1,6 @@
 package com.project.SeviceSellBuy.service.client;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
@@ -11,13 +12,16 @@ import org.springframework.stereotype.Service;
 import com.project.SeviceSellBuy.dto.AdDTO;
 import com.project.SeviceSellBuy.dto.AdDetailsForClientDto;
 import com.project.SeviceSellBuy.dto.ReservationDTO;
+import com.project.SeviceSellBuy.dto.ReviewDTO;
 import com.project.SeviceSellBuy.enums.ReservationStatus;
 import com.project.SeviceSellBuy.enums.ReviewStatus;
 import com.project.SeviceSellBuy.model.Ad;
 import com.project.SeviceSellBuy.model.Reservation;
+import com.project.SeviceSellBuy.model.Review;
 import com.project.SeviceSellBuy.model.User;
 import com.project.SeviceSellBuy.repository.AdRepository;
 import com.project.SeviceSellBuy.repository.ReservationRepository;
+import com.project.SeviceSellBuy.repository.ReviewRepository;
 import com.project.SeviceSellBuy.repository.UserRepository;
 
 @Service
@@ -31,6 +35,9 @@ public class ClientServiceImpl implements ClientServie {
 
 	@Autowired
 	private ReservationRepository reservationRepository;
+
+	@Autowired
+	private ReviewRepository reviewRepository;
 
 	public List<AdDTO> getAllAds() {
 		return adRepository.findAll().stream().map(Ad::getAdDTO).collect(Collectors.toList());
@@ -69,9 +76,34 @@ public class ClientServiceImpl implements ClientServie {
 		}
 		return adDetailsForClientDTO;
 	}
-	
-	public List<ReservationDTO> getAllBookingsByUserId(Long userId){
-		return reservationRepository.findAllByUserId(userId)
-				.stream().map(Reservation::getReservationDto).collect(Collectors.toList());
+
+	public List<ReservationDTO> getAllBookingsByUserId(Long userId) {
+		return reservationRepository.findAllByUserId(userId).stream().map(Reservation::getReservationDto)
+				.collect(Collectors.toList());
 	}
+
+	public Boolean giveReview(ReviewDTO reviewDTO) {
+		
+		Optional<User> optionalUser = userRepository.findById(reviewDTO.getUserId());
+		Optional<Reservation> optionalBooking = reservationRepository.findById(reviewDTO.getBookId());
+		if (optionalUser.isPresent() && optionalBooking.isPresent()) {
+			Review review = new Review();
+
+			review.setReviewDate(new Date());
+			review.setReview(reviewDTO.getReview());
+			review.setRating(reviewDTO.getRating());
+
+			review.setUser(optionalUser.get());
+			review.setAd(optionalBooking.get().getAd());
+
+			reviewRepository.save(review);
+
+			Reservation booking = optionalBooking.get();
+			booking.setReviewStatus(ReviewStatus.TRUE);
+			reservationRepository.save(booking);
+			return true;
+		}
+		return false;
+	}
+
 }

@@ -7,6 +7,9 @@ import javax.xml.crypto.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.project.SeviceSellBuy.dto.ReviewDTO;
+import com.project.SeviceSellBuy.dto.UserDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,6 +40,12 @@ public class Review {
 	@JoinColumn(name = "ad_id",nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Ad ad;
+	
+//	@ManyToOne(fetch = FetchType.LAZY,optional = false)
+//	@JoinColumn(name = "Reservation_id",nullable = false)
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private Reservation bookId;
+	
 
 	public Long getId() {
 		return id;
@@ -86,5 +95,3 @@ public class Review {
 		this.ad = ad;
 	}
 	
-	
-}
