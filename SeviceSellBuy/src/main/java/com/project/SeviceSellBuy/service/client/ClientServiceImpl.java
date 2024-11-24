@@ -48,13 +48,14 @@ public class ClientServiceImpl implements ClientServie {
 
 		if (optionalAd.isPresent() && optionalUser.isPresent()) {
 			Reservation reservation = new Reservation();
-			reservation.setBookdate(reservationDTO.getbookdate());
+			reservation.setBookDate(reservationDTO.getBookDate());
 			reservation.setReservationStatus(ReservationStatus.PENDING);
 			reservation.setUser(optionalUser.get());
 			reservation.setAd(optionalAd.get());
 			reservation.setCompany(optionalAd.get().getUser());
 			reservation.setReviewStatus(ReviewStatus.FALSE);
 			reservationRepository.save(reservation);
+			System.out.println(reservation.getBookDate());
 			return true;
 		}
 		return false;
@@ -67,5 +68,10 @@ public class ClientServiceImpl implements ClientServie {
 			adDetailsForClientDTO.setAdDTO(optionalAd.get().getAdDTO());
 		}
 		return adDetailsForClientDTO;
+	}
+	
+	public List<ReservationDTO> getAllBookingsByUserId(Long userId){
+		return reservationRepository.findAllByUserId(userId)
+				.stream().map(Reservation::getReservationDto).collect(Collectors.toList());
 	}
 }

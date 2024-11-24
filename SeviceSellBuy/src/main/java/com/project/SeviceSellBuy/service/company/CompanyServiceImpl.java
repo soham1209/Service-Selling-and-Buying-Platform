@@ -5,14 +5,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.SeviceSellBuy.dto.AdDTO;
+import com.project.SeviceSellBuy.dto.ReservationDTO;
+import com.project.SeviceSellBuy.enums.ReservationStatus;
 import com.project.SeviceSellBuy.model.Ad;
+import com.project.SeviceSellBuy.model.Reservation;
 import com.project.SeviceSellBuy.model.User;
 import com.project.SeviceSellBuy.repository.AdRepository;
+import com.project.SeviceSellBuy.repository.ReservationRepository;
 import com.project.SeviceSellBuy.repository.UserRepository;
 
 @Service
@@ -23,6 +28,9 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	private AdRepository adRepository;
+	
+	@Autowired
+	private ReservationRepository reservationRepository;
 
 	public boolean postAd(Long userId, AdDTO adDTO) throws IOException {
 		Optional<User> optionalUser = userRepository.findById(userId);
@@ -76,5 +84,31 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		return false;
 	}
+	
+	public List<ReservationDTO> getAllAdBookings (Long companyId){
+		return reservationRepository.findAllByCompanyId(companyId)
+		.stream().map(Reservation::getReservationDto).collect(Collectors.toList());
+		}
+	
+	public boolean changeBookingStatus (Long bookingId, String status) {
+		Optional<Reservation> optionalReservation = reservationRepository.findById(bookingId);
+		
+		if (optionalReservation.isPresent()){
+			Reservation existingReservation =optionalReservation.get();
+			
+		if(Objects.equals(status, "Approve"))
+		{	
+			existingReservation.setReservationStatus (ReservationStatus.APPROVED);
+		}
+		else{
+			existingReservation.setReservationStatus(ReservationStatus.REJECTED);
+		}
+			reservationRepository.save(existingReservation);
+			return true;
+		}
+		return false;
+	}
+	
+	
 
 }

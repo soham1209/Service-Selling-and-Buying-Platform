@@ -5,6 +5,7 @@ import java.util.Date;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.SeviceSellBuy.enums.ReservationStatus;
 import com.project.SeviceSellBuy.enums.ReviewStatus;
 import com.project.SeviceSellBuy.model.User;
@@ -20,9 +21,9 @@ public class ReservationDTO {
 
 	private Long id;
 	
-	private Date bookdate;
+	private Date bookDate;
 	
-	private String serviceNameString;
+	private String serviceName;
 	
 	private ReservationStatus reservationStatus;
 	
@@ -44,20 +45,20 @@ public class ReservationDTO {
 		this.id = id;
 	}
 
-	public Date getbookdate() {
-		return bookdate;
+	public Date getBookDate() {
+		return bookDate;
 	}
 
-	public void setbookdate(Date bookdate) {
-		this.bookdate = bookdate;
+	public void setBookDate(Date bookDate) {
+		this.bookDate = bookDate;
 	}
 
-	public String getServiceNameString() {
-		return serviceNameString;
+	public String getServiceName() {
+		return serviceName;
 	}
 
-	public void setServiceNameString(String serviceNameString) {
-		this.serviceNameString = serviceNameString;
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
 	}
 
 	public ReservationStatus getReservationStatus() {

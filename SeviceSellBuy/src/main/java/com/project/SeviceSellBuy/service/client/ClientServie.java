@@ -15,4 +15,6 @@ public interface ClientServie {
 	public boolean bookService(ReservationDTO reservationDTO);
 	
 	public AdDetailsForClientDto getAdDetailsByAdId(Long adId);
+	
+	public List<ReservationDTO> getAllBookingsByUserId(Long userId);
 }

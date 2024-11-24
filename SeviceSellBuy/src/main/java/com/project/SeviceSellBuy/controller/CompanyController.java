@@ -1,6 +1,7 @@
 package com.project.SeviceSellBuy.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.SeviceSellBuy.dto.AdDTO;
+import com.project.SeviceSellBuy.dto.ReservationDTO;
 import com.project.SeviceSellBuy.service.company.CompanyService;
 
 @RequestMapping("/api/company")
@@ -69,5 +71,19 @@ public class CompanyController {
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+	}
+
+	@GetMapping("/bookings/{companyId}")
+	public ResponseEntity<List<ReservationDTO>> getAllAdBookings(@PathVariable Long companyId) {
+		System.out.println(ResponseEntity.ok(companyService.getAllAdBookings(companyId)));
+		return ResponseEntity.ok(companyService.getAllAdBookings(companyId));
+	}
+
+	@GetMapping("/booking/{bookingId}/{status}")
+	public ResponseEntity<?> changeBookingStatus(@PathVariable Long bookingId, @PathVariable String status) {
+		boolean success = companyService.changeBookingStatus(bookingId, status);
+		if (success)
+			return ResponseEntity.ok().build();
+		return ResponseEntity.notFound().build();
 	}
 }

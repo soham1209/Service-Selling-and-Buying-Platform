@@ -5,6 +5,7 @@ import java.util.Date;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.SeviceSellBuy.dto.ReservationDTO;
 import com.project.SeviceSellBuy.enums.ReservationStatus;
 import com.project.SeviceSellBuy.enums.ReviewStatus;
@@ -16,6 +17,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 public class Reservation {
@@ -28,7 +31,7 @@ public class Reservation {
 	
 	private ReviewStatus reviewStatus;
 	
-	private Date bookdate;
+	private Date bookDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -69,12 +72,12 @@ public class Reservation {
 		this.reviewStatus = reviewStatus;
 	}
 
-	public Date getBookdate() {
-		return bookdate;
+	public Date getBookDate() {
+		return bookDate;
 	}
 
-	public void setBookdate(Date bookdate) {
-		this.bookdate = bookdate;
+	public void setBookDate(Date bookDate) {
+		this.bookDate = bookDate;
 	}
 
 	public User getUser() {
@@ -105,8 +108,8 @@ public class Reservation {
 	public ReservationDTO getReservationDto(){
 		ReservationDTO dto= new ReservationDTO();
 		dto.setId(id);
-		dto.setServiceNameString(ad.getServiceName());
-		dto.setbookdate(bookdate);
+		dto.setServiceName(ad.getServiceName());
+		dto.setBookDate(bookDate);
 		dto.setReservationStatus(reservationStatus);
 		dto.setReviewStatus(reviewStatus);
 		dto.setAdId(ad.getId());

@@ -36,9 +36,13 @@ public class ClientContorller {
 
 	@PostMapping("/book-service")
 	public ResponseEntity<?> bookService(@RequestBody ReservationDTO reservationDTO) {
+
 		boolean success = clientServie.bookService(reservationDTO);
 		if (success) {
+			System.out.println("Received Book Date: " + reservationDTO.getBookDate());
+			System.out.println("Received Book Date: " + reservationDTO.getReservationStatus());
 			return ResponseEntity.status(HttpStatus.OK).build();
+
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -47,6 +51,11 @@ public class ClientContorller {
 	@GetMapping("/ad/{adId}")
 	public ResponseEntity<?> getAdDetailsByAdId(@PathVariable Long adId) {
 		return ResponseEntity.ok(clientServie.getAdDetailsByAdId(adId));
+	}
+
+	@GetMapping("/my-bookings/{userId}")
+	public ResponseEntity<?> getAllBookingsByUserId(@PathVariable Long userId) {
+		return ResponseEntity.ok(clientServie.getAllBookingsByUserId(userId));
 	}
 
 }
